@@ -1,0 +1,77 @@
+version: '3.8'
+
+services:
+  mqtt-broker:
+    image: eclipse-mosquitto
+    container_name: mqtt-broker
+    ports:
+      - "8883:8883"
+    volumes:
+      - ./mosquitto/mosquitto.conf:/mosquitto/config/mosquitto.conf
+      - ./certs/mqtt-certs:/mosquitto/certs
+
+  rabbitmq:
+    image: rabbitmq:3-management
+    container_name: rabbitmq
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+
+  mongo:
+    image: mongo:6
+    container_name: mongo
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongo_data:/data/db
+      - ./certs/mongo-certs:/etc/mongo/certs
+      - ./certs/mongo-certs/mongod.conf:/etc/mongo/mongod.conf
+      - ./mongo-entrypoint.sh:/mongo-entrypoint.sh
+    secrets:
+      - mongo_user
+      - mongo_pass
+    entrypoint: ["/bin/bash", "/mongo-entrypoint.sh"]
+
+  sdc-adapter:
+    image: sdc-adapter:latest
+    container_name: sdc-adapter
+    depends_on:
+      - mqtt-broker
+      - rabbitmq
+      - mongo
+    volumes:
+      - ./certs/client-keystores:/app/certs
+      - ./certs/client-keystores/aes.key:/app/certs/aes.key:ro
+
+    secrets:
+      - mongo_user
+      - mongo_pass
+      - keystore_password
+      - truststore_password
+
+  fhir-backend:
+    image: fhir-backend:latest
+    build:
+      context: ./fhir-backend
+    container_name: fhir-backend
+    volumes:
+      - ./certs/client-keystores/aes.key:/app/certs/aes.key:ro
+    secrets:
+      - mongo_user
+      - mongo_pass
+      - truststore_password
+    ports:
+      - "8443:8443"
+
+volumes:
+  mongo_data:
+
+secrets:
+  mongo_user:
+    external: true
+  mongo_pass:
+    external: true
+  keystore_password:
+    external: true
+  truststore_password:
+    external: true

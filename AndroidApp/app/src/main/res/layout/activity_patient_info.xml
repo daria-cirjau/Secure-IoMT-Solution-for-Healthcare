@@ -1,0 +1,122 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/patientLayout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="16dp"
+    android:background="#FFFFFF">
+
+    <!-- Patient Name -->
+    <TextView
+        android:id="@+id/patientNameText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Patient Name"
+        android:textStyle="bold"
+        android:textSize="20sp"
+        android:textColor="#673AB7"
+        android:layout_marginBottom="16dp" />
+
+    <!-- Report Controls Container -->
+    <LinearLayout
+        android:id="@+id/reportControlsLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_marginBottom="16dp">
+
+        <!-- Generate Report Button -->
+        <Button
+            android:id="@+id/reportButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Generate Report"
+            android:minHeight="48dp"
+            android:minWidth="160dp"
+            android:background="@drawable/button_rounded"
+            android:textColor="#FFFFFF"/>
+
+        <!-- Interval Date/Time Picker Container (Initially Hidden) -->
+        <LinearLayout
+            android:id="@+id/dateTimePickerLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:visibility="gone"
+            android:layout_marginTop="8dp"
+            android:gravity="center_vertical">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="From:"
+                android:layout_marginEnd="4dp" />
+
+            <TextView
+                android:id="@+id/startDateText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Select Date"
+                android:textColor="#0000FF"
+                android:padding="8dp"
+                android:background="@android:drawable/editbox_background_normal"
+                android:clickable="true"
+                android:focusable="true" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="  To: "
+                android:layout_marginStart="8dp"
+                android:layout_marginEnd="4dp" />
+
+            <TextView
+                android:id="@+id/endDateText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Select Date"
+                android:textColor="#0000FF"
+                android:padding="8dp"
+                android:background="@android:drawable/editbox_background_normal"
+                android:clickable="true"
+                android:focusable="true" />
+        </LinearLayout>
+
+        <Button
+            android:id="@+id/fetchReportButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Fetch Report"
+            android:minHeight="48dp"
+            android:minWidth="160dp"
+            android:background="@drawable/button_rounded"
+            android:textColor="#FFFFFF"
+            android:visibility="gone"
+            android:layout_gravity="center_horizontal" />
+
+    </LinearLayout>
+
+    <!-- Chart Section -->
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1">
+
+        <ImageView
+            android:id="@+id/chartImage"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:contentDescription="FHIR Chart"
+            android:scaleType="fitCenter" />
+
+        <TextView
+            android:id="@+id/noDataText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="No live data available yet"
+            android:textColor="#673AB7"
+            android:textSize="18sp"
+            android:layout_gravity="center"
+            android:visibility="gone" />
+    </FrameLayout>
+</LinearLayout>
