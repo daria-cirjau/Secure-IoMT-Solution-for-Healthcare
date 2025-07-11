@@ -1,0 +1,90 @@
+plugins {
+    id 'com.android.application'
+    id 'com.chaquo.python' version '14.0.2'
+}
+def props = new Properties()
+props.load(new FileInputStream(rootProject.file("local.properties")))
+
+android {
+    namespace 'com.disertatie'
+    compileSdk 34
+
+    defaultConfig {
+        applicationId "com.disertatie"
+        minSdk 22
+        targetSdk 34
+        versionCode 1
+        versionName "1.0"
+
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+
+        ndk {
+            abiFilters "armeabi-v7a", "arm64-v8a", "x86", "x86_64"
+        }
+
+        python {
+            buildPython "C:/Software/Python/Python311/python.exe"
+            pip {
+                install "fpdf"
+                install "pika"
+                install "matplotlib"
+                install "numpy"
+            }
+        }
+        buildConfigField "String", "MONGO_USER", "\"${props['mongo.user']}\""
+        buildConfigField "String", "MONGO_PASS", "\"${props['mongo.pass']}\""
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+
+    android {
+        compileOptions {
+            sourceCompatibility JavaVersion.VERSION_11
+            targetCompatibility JavaVersion.VERSION_11
+            coreLibraryDesugaringEnabled true
+        }
+        packagingOptions {
+            resources {
+                excludes += "META-INF/native-image/**"
+            }
+        }
+    }
+
+}
+
+dependencies {
+    implementation 'androidx.appcompat:appcompat:1.6.1'
+    implementation 'com.google.android.material:material:1.11.0'
+    implementation 'androidx.activity:activity:1.7.2'
+    implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
+
+    testImplementation 'junit:junit:4.13.2'
+    androidTestImplementation 'androidx.test.ext:junit:1.1.5'
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.1'
+
+    implementation 'com.google.guava:guava:30.1.1-android'
+
+    // RabbitMQ Java client
+    implementation 'com.rabbitmq:amqp-client:5.18.0'
+
+    // HAPI FHIR
+    implementation("ca.uhn.hapi.fhir:hapi-fhir-base:6.10.0") {
+        exclude group: "com.google.guava", module: "guava"
+    }
+    implementation 'ca.uhn.hapi.fhir:hapi-fhir-structures-r4:6.10.0'
+    coreLibraryDesugaring 'com.android.tools:desugar_jdk_libs:2.0.4' // or latest
+
+
+}
+
+configurations.all {
+    resolutionStrategy {
+        force("com.google.guava:guava:30.1.1-android")
+    }
+}
+

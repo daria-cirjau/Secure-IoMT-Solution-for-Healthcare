@@ -1,0 +1,6 @@
+applicationType: default
+defaultPackage: org.disertatie
+testFramework: junit
+sourceLanguage: java
+buildTool: maven
+features: [acme, app-name, http-client-test, java, java-application, junit, logback, maven, maven-enforcer-plugin, micronaut-aot, micronaut-http-validation, mongo-sync, netty-server, properties, readme, serialization-jackson, shade, static-resources, test-resources]
