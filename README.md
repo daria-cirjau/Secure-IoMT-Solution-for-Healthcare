@@ -23,6 +23,7 @@ This project presents a secure and standards-compliant IoT architecture designed
 ---
 
 ## System Architecture
+<img width="1000" height="700" alt="Arhitecture" src="https://github.com/user-attachments/assets/b9e06b68-d313-41fc-8a3a-839348723104" />
 
 ### 1. Data Collection
 
